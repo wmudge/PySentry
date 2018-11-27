@@ -24,7 +24,7 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     keywords='apache sentry hadoop security governance',
-    packages=['pysentry'],
+    packages=find_packages(),
     install_requires=['thrift'],
 
 )
