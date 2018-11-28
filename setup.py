@@ -25,11 +25,10 @@ setup(
     ],
     keywords='apache sentry hadoop security governance',
     packages=find_packages(),
-    # Pinned...
     install_requires=[
-        'thrift=0.9.3',
-        'sasl=0.2.1',
-        'thrift_sasl=0.2.1'
+        'thrift==0.9.3',
+        'sasl==0.2.1',
+        'thrift_sasl==0.2.1'
     ],
 
 )
