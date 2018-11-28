@@ -99,6 +99,7 @@ class SentryError(Exception):
     def __init__(self, code, message):
         self.code = code
         self.message = message
+        # TODO Add optional stack info
 
     def __str__(self):
         return "(Code: {}) {}".format(self.code, self.message)
