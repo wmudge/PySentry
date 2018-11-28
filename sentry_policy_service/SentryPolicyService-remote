@@ -30,24 +30,14 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('  TAlterSentryRoleRevokePrivilegeResponse alter_sentry_role_revoke_privilege(TAlterSentryRoleRevokePrivilegeRequest request)')
     print('  TAlterSentryRoleAddGroupsResponse alter_sentry_role_add_groups(TAlterSentryRoleAddGroupsRequest request)')
     print('  TAlterSentryRoleDeleteGroupsResponse alter_sentry_role_delete_groups(TAlterSentryRoleDeleteGroupsRequest request)')
-    print('  TAlterSentryRoleAddUsersResponse alter_sentry_role_add_users(TAlterSentryRoleAddUsersRequest request)')
-    print('  TAlterSentryRoleDeleteUsersResponse alter_sentry_role_delete_users(TAlterSentryRoleDeleteUsersRequest request)')
     print('  TListSentryRolesResponse list_sentry_roles_by_group(TListSentryRolesRequest request)')
-    print('  TListSentryRolesResponse list_sentry_roles_by_user(TListSentryRolesForUserRequest request)')
     print('  TListSentryPrivilegesResponse list_sentry_privileges_by_role(TListSentryPrivilegesRequest request)')
-    print('  TListSentryPrivilegesResponse list_sentry_privileges_by_user(TListSentryPrivilegesRequest request)')
-    print('  TListSentryPrivilegesResponse list_sentry_privileges_by_user_and_itsgroups(TListSentryPrivilegesRequest request)')
     print('  TListSentryPrivilegesForProviderResponse list_sentry_privileges_for_provider(TListSentryPrivilegesForProviderRequest request)')
     print('  TDropPrivilegesResponse drop_sentry_privilege(TDropPrivilegesRequest request)')
     print('  TRenamePrivilegesResponse rename_sentry_privilege(TRenamePrivilegesRequest request)')
     print('  TListSentryPrivilegesByAuthResponse list_sentry_privileges_by_authorizable(TListSentryPrivilegesByAuthRequest request)')
     print('  TSentryConfigValueResponse get_sentry_config_value(TSentryConfigValueRequest request)')
-    print('  TSentryExportMappingDataResponse export_sentry_mapping_data(TSentryExportMappingDataRequest request)')
-    print('  TSentryImportMappingDataResponse import_sentry_mapping_data(TSentryImportMappingDataRequest request)')
     print('  TSentrySyncIDResponse sentry_sync_notifications(TSentrySyncIDRequest request)')
-    print('  TSentryHmsEventNotificationResponse sentry_notify_hms_event(TSentryHmsEventNotification request)')
-    print('  TSentryPrivilegesResponse list_roles_privileges(TSentryPrivilegesRequest request)')
-    print('  TSentryPrivilegesResponse list_users_privileges(TSentryPrivilegesRequest request)')
     print('')
     sys.exit(0)
 
@@ -163,47 +153,17 @@ elif cmd == 'alter_sentry_role_delete_groups':
         sys.exit(1)
     pp.pprint(client.alter_sentry_role_delete_groups(eval(args[0]),))
 
-elif cmd == 'alter_sentry_role_add_users':
-    if len(args) != 1:
-        print('alter_sentry_role_add_users requires 1 args')
-        sys.exit(1)
-    pp.pprint(client.alter_sentry_role_add_users(eval(args[0]),))
-
-elif cmd == 'alter_sentry_role_delete_users':
-    if len(args) != 1:
-        print('alter_sentry_role_delete_users requires 1 args')
-        sys.exit(1)
-    pp.pprint(client.alter_sentry_role_delete_users(eval(args[0]),))
-
 elif cmd == 'list_sentry_roles_by_group':
     if len(args) != 1:
         print('list_sentry_roles_by_group requires 1 args')
         sys.exit(1)
     pp.pprint(client.list_sentry_roles_by_group(eval(args[0]),))
 
-elif cmd == 'list_sentry_roles_by_user':
-    if len(args) != 1:
-        print('list_sentry_roles_by_user requires 1 args')
-        sys.exit(1)
-    pp.pprint(client.list_sentry_roles_by_user(eval(args[0]),))
-
 elif cmd == 'list_sentry_privileges_by_role':
     if len(args) != 1:
         print('list_sentry_privileges_by_role requires 1 args')
         sys.exit(1)
     pp.pprint(client.list_sentry_privileges_by_role(eval(args[0]),))
-
-elif cmd == 'list_sentry_privileges_by_user':
-    if len(args) != 1:
-        print('list_sentry_privileges_by_user requires 1 args')
-        sys.exit(1)
-    pp.pprint(client.list_sentry_privileges_by_user(eval(args[0]),))
-
-elif cmd == 'list_sentry_privileges_by_user_and_itsgroups':
-    if len(args) != 1:
-        print('list_sentry_privileges_by_user_and_itsgroups requires 1 args')
-        sys.exit(1)
-    pp.pprint(client.list_sentry_privileges_by_user_and_itsgroups(eval(args[0]),))
 
 elif cmd == 'list_sentry_privileges_for_provider':
     if len(args) != 1:
@@ -235,41 +195,11 @@ elif cmd == 'get_sentry_config_value':
         sys.exit(1)
     pp.pprint(client.get_sentry_config_value(eval(args[0]),))
 
-elif cmd == 'export_sentry_mapping_data':
-    if len(args) != 1:
-        print('export_sentry_mapping_data requires 1 args')
-        sys.exit(1)
-    pp.pprint(client.export_sentry_mapping_data(eval(args[0]),))
-
-elif cmd == 'import_sentry_mapping_data':
-    if len(args) != 1:
-        print('import_sentry_mapping_data requires 1 args')
-        sys.exit(1)
-    pp.pprint(client.import_sentry_mapping_data(eval(args[0]),))
-
 elif cmd == 'sentry_sync_notifications':
     if len(args) != 1:
         print('sentry_sync_notifications requires 1 args')
         sys.exit(1)
     pp.pprint(client.sentry_sync_notifications(eval(args[0]),))
-
-elif cmd == 'sentry_notify_hms_event':
-    if len(args) != 1:
-        print('sentry_notify_hms_event requires 1 args')
-        sys.exit(1)
-    pp.pprint(client.sentry_notify_hms_event(eval(args[0]),))
-
-elif cmd == 'list_roles_privileges':
-    if len(args) != 1:
-        print('list_roles_privileges requires 1 args')
-        sys.exit(1)
-    pp.pprint(client.list_roles_privileges(eval(args[0]),))
-
-elif cmd == 'list_users_privileges':
-    if len(args) != 1:
-        print('list_users_privileges requires 1 args')
-        sys.exit(1)
-    pp.pprint(client.list_users_privileges(eval(args[0]),))
 
 else:
     print('Unrecognized method %s' % cmd)

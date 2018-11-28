@@ -35,24 +35,6 @@ class TSentryGrantOption(object):
     }
 
 
-class TSentryPrincipalType(object):
-    NONE = 0
-    ROLE = 1
-    USER = 2
-
-    _VALUES_TO_NAMES = {
-        0: "NONE",
-        1: "ROLE",
-        2: "USER",
-    }
-
-    _NAMES_TO_VALUES = {
-        "NONE": 0,
-        "ROLE": 1,
-        "USER": 2,
-    }
-
-
 class TSentryPrivilege(object):
     """
     Attributes:
@@ -712,170 +694,6 @@ class TAlterSentryRoleAddGroupsResponse(object):
         return not (self == other)
 
 
-class TAlterSentryRoleAddUsersRequest(object):
-    """
-    Attributes:
-     - protocol_version
-     - requestorUserName
-     - roleName
-     - users
-    """
-
-
-    def __init__(self, protocol_version=1, requestorUserName=None, roleName=None, users=None,):
-        self.protocol_version = protocol_version
-        self.requestorUserName = requestorUserName
-        self.roleName = roleName
-        self.users = users
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.I32:
-                    self.protocol_version = iprot.readI32()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.STRING:
-                    self.requestorUserName = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.STRING:
-                    self.roleName = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 4:
-                if ftype == TType.SET:
-                    self.users = set()
-                    (_etype10, _size7) = iprot.readSetBegin()
-                    for _i11 in range(_size7):
-                        _elem12 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.users.add(_elem12)
-                    iprot.readSetEnd()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TAlterSentryRoleAddUsersRequest')
-        if self.protocol_version is not None:
-            oprot.writeFieldBegin('protocol_version', TType.I32, 1)
-            oprot.writeI32(self.protocol_version)
-            oprot.writeFieldEnd()
-        if self.requestorUserName is not None:
-            oprot.writeFieldBegin('requestorUserName', TType.STRING, 2)
-            oprot.writeString(self.requestorUserName.encode('utf-8') if sys.version_info[0] == 2 else self.requestorUserName)
-            oprot.writeFieldEnd()
-        if self.roleName is not None:
-            oprot.writeFieldBegin('roleName', TType.STRING, 3)
-            oprot.writeString(self.roleName.encode('utf-8') if sys.version_info[0] == 2 else self.roleName)
-            oprot.writeFieldEnd()
-        if self.users is not None:
-            oprot.writeFieldBegin('users', TType.SET, 4)
-            oprot.writeSetBegin(TType.STRING, len(self.users))
-            for iter13 in self.users:
-                oprot.writeString(iter13.encode('utf-8') if sys.version_info[0] == 2 else iter13)
-            oprot.writeSetEnd()
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.protocol_version is None:
-            raise TProtocolException(message='Required field protocol_version is unset!')
-        if self.requestorUserName is None:
-            raise TProtocolException(message='Required field requestorUserName is unset!')
-        if self.roleName is None:
-            raise TProtocolException(message='Required field roleName is unset!')
-        if self.users is None:
-            raise TProtocolException(message='Required field users is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
-class TAlterSentryRoleAddUsersResponse(object):
-    """
-    Attributes:
-     - status
-    """
-
-
-    def __init__(self, status=None,):
-        self.status = status
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.STRUCT:
-                    self.status = sentry_common_service.ttypes.TSentryResponseStatus()
-                    self.status.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TAlterSentryRoleAddUsersResponse')
-        if self.status is not None:
-            oprot.writeFieldBegin('status', TType.STRUCT, 1)
-            self.status.write(oprot)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.status is None:
-            raise TProtocolException(message='Required field status is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
 class TAlterSentryRoleDeleteGroupsRequest(object):
     """
     Attributes:
@@ -919,11 +737,11 @@ class TAlterSentryRoleDeleteGroupsRequest(object):
             elif fid == 5:
                 if ftype == TType.SET:
                     self.groups = set()
-                    (_etype17, _size14) = iprot.readSetBegin()
-                    for _i18 in range(_size14):
-                        _elem19 = TSentryGroup()
-                        _elem19.read(iprot)
-                        self.groups.add(_elem19)
+                    (_etype10, _size7) = iprot.readSetBegin()
+                    for _i11 in range(_size7):
+                        _elem12 = TSentryGroup()
+                        _elem12.read(iprot)
+                        self.groups.add(_elem12)
                     iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
@@ -952,8 +770,8 @@ class TAlterSentryRoleDeleteGroupsRequest(object):
         if self.groups is not None:
             oprot.writeFieldBegin('groups', TType.SET, 5)
             oprot.writeSetBegin(TType.STRUCT, len(self.groups))
-            for iter20 in self.groups:
-                iter20.write(oprot)
+            for iter13 in self.groups:
+                iter13.write(oprot)
             oprot.writeSetEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
@@ -1041,170 +859,6 @@ class TAlterSentryRoleDeleteGroupsResponse(object):
         return not (self == other)
 
 
-class TAlterSentryRoleDeleteUsersRequest(object):
-    """
-    Attributes:
-     - protocol_version
-     - requestorUserName
-     - roleName
-     - users
-    """
-
-
-    def __init__(self, protocol_version=1, requestorUserName=None, roleName=None, users=None,):
-        self.protocol_version = protocol_version
-        self.requestorUserName = requestorUserName
-        self.roleName = roleName
-        self.users = users
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.I32:
-                    self.protocol_version = iprot.readI32()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.STRING:
-                    self.requestorUserName = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.STRING:
-                    self.roleName = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 4:
-                if ftype == TType.SET:
-                    self.users = set()
-                    (_etype24, _size21) = iprot.readSetBegin()
-                    for _i25 in range(_size21):
-                        _elem26 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.users.add(_elem26)
-                    iprot.readSetEnd()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TAlterSentryRoleDeleteUsersRequest')
-        if self.protocol_version is not None:
-            oprot.writeFieldBegin('protocol_version', TType.I32, 1)
-            oprot.writeI32(self.protocol_version)
-            oprot.writeFieldEnd()
-        if self.requestorUserName is not None:
-            oprot.writeFieldBegin('requestorUserName', TType.STRING, 2)
-            oprot.writeString(self.requestorUserName.encode('utf-8') if sys.version_info[0] == 2 else self.requestorUserName)
-            oprot.writeFieldEnd()
-        if self.roleName is not None:
-            oprot.writeFieldBegin('roleName', TType.STRING, 3)
-            oprot.writeString(self.roleName.encode('utf-8') if sys.version_info[0] == 2 else self.roleName)
-            oprot.writeFieldEnd()
-        if self.users is not None:
-            oprot.writeFieldBegin('users', TType.SET, 4)
-            oprot.writeSetBegin(TType.STRING, len(self.users))
-            for iter27 in self.users:
-                oprot.writeString(iter27.encode('utf-8') if sys.version_info[0] == 2 else iter27)
-            oprot.writeSetEnd()
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.protocol_version is None:
-            raise TProtocolException(message='Required field protocol_version is unset!')
-        if self.requestorUserName is None:
-            raise TProtocolException(message='Required field requestorUserName is unset!')
-        if self.roleName is None:
-            raise TProtocolException(message='Required field roleName is unset!')
-        if self.users is None:
-            raise TProtocolException(message='Required field users is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
-class TAlterSentryRoleDeleteUsersResponse(object):
-    """
-    Attributes:
-     - status
-    """
-
-
-    def __init__(self, status=None,):
-        self.status = status
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.STRUCT:
-                    self.status = sentry_common_service.ttypes.TSentryResponseStatus()
-                    self.status.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TAlterSentryRoleDeleteUsersResponse')
-        if self.status is not None:
-            oprot.writeFieldBegin('status', TType.STRUCT, 1)
-            self.status.write(oprot)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.status is None:
-            raise TProtocolException(message='Required field status is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
 class TAlterSentryRoleGrantPrivilegeRequest(object):
     """
     Attributes:
@@ -1256,11 +910,11 @@ class TAlterSentryRoleGrantPrivilegeRequest(object):
             elif fid == 6:
                 if ftype == TType.SET:
                     self.privileges = set()
-                    (_etype31, _size28) = iprot.readSetBegin()
-                    for _i32 in range(_size28):
-                        _elem33 = TSentryPrivilege()
-                        _elem33.read(iprot)
-                        self.privileges.add(_elem33)
+                    (_etype17, _size14) = iprot.readSetBegin()
+                    for _i18 in range(_size14):
+                        _elem19 = TSentryPrivilege()
+                        _elem19.read(iprot)
+                        self.privileges.add(_elem19)
                     iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
@@ -1293,8 +947,8 @@ class TAlterSentryRoleGrantPrivilegeRequest(object):
         if self.privileges is not None:
             oprot.writeFieldBegin('privileges', TType.SET, 6)
             oprot.writeSetBegin(TType.STRUCT, len(self.privileges))
-            for iter34 in self.privileges:
-                iter34.write(oprot)
+            for iter20 in self.privileges:
+                iter20.write(oprot)
             oprot.writeSetEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
@@ -1359,11 +1013,11 @@ class TAlterSentryRoleGrantPrivilegeResponse(object):
             elif fid == 3:
                 if ftype == TType.SET:
                     self.privileges = set()
-                    (_etype38, _size35) = iprot.readSetBegin()
-                    for _i39 in range(_size35):
-                        _elem40 = TSentryPrivilege()
-                        _elem40.read(iprot)
-                        self.privileges.add(_elem40)
+                    (_etype24, _size21) = iprot.readSetBegin()
+                    for _i25 in range(_size21):
+                        _elem26 = TSentryPrivilege()
+                        _elem26.read(iprot)
+                        self.privileges.add(_elem26)
                     iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
@@ -1388,8 +1042,8 @@ class TAlterSentryRoleGrantPrivilegeResponse(object):
         if self.privileges is not None:
             oprot.writeFieldBegin('privileges', TType.SET, 3)
             oprot.writeSetBegin(TType.STRUCT, len(self.privileges))
-            for iter41 in self.privileges:
-                iter41.write(oprot)
+            for iter27 in self.privileges:
+                iter27.write(oprot)
             oprot.writeSetEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
@@ -1463,11 +1117,11 @@ class TAlterSentryRoleRevokePrivilegeRequest(object):
             elif fid == 6:
                 if ftype == TType.SET:
                     self.privileges = set()
-                    (_etype45, _size42) = iprot.readSetBegin()
-                    for _i46 in range(_size42):
-                        _elem47 = TSentryPrivilege()
-                        _elem47.read(iprot)
-                        self.privileges.add(_elem47)
+                    (_etype31, _size28) = iprot.readSetBegin()
+                    for _i32 in range(_size28):
+                        _elem33 = TSentryPrivilege()
+                        _elem33.read(iprot)
+                        self.privileges.add(_elem33)
                     iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
@@ -1500,8 +1154,8 @@ class TAlterSentryRoleRevokePrivilegeRequest(object):
         if self.privileges is not None:
             oprot.writeFieldBegin('privileges', TType.SET, 6)
             oprot.writeSetBegin(TType.STRUCT, len(self.privileges))
-            for iter48 in self.privileges:
-                iter48.write(oprot)
+            for iter34 in self.privileges:
+                iter34.write(oprot)
             oprot.writeSetEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
@@ -1669,90 +1323,6 @@ class TListSentryRolesRequest(object):
         return not (self == other)
 
 
-class TListSentryRolesForUserRequest(object):
-    """
-    Attributes:
-     - protocol_version
-     - requestorUserName
-     - userName
-    """
-
-
-    def __init__(self, protocol_version=1, requestorUserName=None, userName=None,):
-        self.protocol_version = protocol_version
-        self.requestorUserName = requestorUserName
-        self.userName = userName
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.I32:
-                    self.protocol_version = iprot.readI32()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.STRING:
-                    self.requestorUserName = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.STRING:
-                    self.userName = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TListSentryRolesForUserRequest')
-        if self.protocol_version is not None:
-            oprot.writeFieldBegin('protocol_version', TType.I32, 1)
-            oprot.writeI32(self.protocol_version)
-            oprot.writeFieldEnd()
-        if self.requestorUserName is not None:
-            oprot.writeFieldBegin('requestorUserName', TType.STRING, 2)
-            oprot.writeString(self.requestorUserName.encode('utf-8') if sys.version_info[0] == 2 else self.requestorUserName)
-            oprot.writeFieldEnd()
-        if self.userName is not None:
-            oprot.writeFieldBegin('userName', TType.STRING, 3)
-            oprot.writeString(self.userName.encode('utf-8') if sys.version_info[0] == 2 else self.userName)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.protocol_version is None:
-            raise TProtocolException(message='Required field protocol_version is unset!')
-        if self.requestorUserName is None:
-            raise TProtocolException(message='Required field requestorUserName is unset!')
-        if self.userName is None:
-            raise TProtocolException(message='Required field userName is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
 class TSentryRole(object):
     """
     Attributes:
@@ -1784,11 +1354,11 @@ class TSentryRole(object):
             elif fid == 2:
                 if ftype == TType.SET:
                     self.groups = set()
-                    (_etype52, _size49) = iprot.readSetBegin()
-                    for _i53 in range(_size49):
-                        _elem54 = TSentryGroup()
-                        _elem54.read(iprot)
-                        self.groups.add(_elem54)
+                    (_etype38, _size35) = iprot.readSetBegin()
+                    for _i39 in range(_size35):
+                        _elem40 = TSentryGroup()
+                        _elem40.read(iprot)
+                        self.groups.add(_elem40)
                     iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
@@ -1814,8 +1384,8 @@ class TSentryRole(object):
         if self.groups is not None:
             oprot.writeFieldBegin('groups', TType.SET, 2)
             oprot.writeSetBegin(TType.STRUCT, len(self.groups))
-            for iter55 in self.groups:
-                iter55.write(oprot)
+            for iter41 in self.groups:
+                iter41.write(oprot)
             oprot.writeSetEnd()
             oprot.writeFieldEnd()
         if self.grantorPrincipal is not None:
@@ -1876,11 +1446,11 @@ class TListSentryRolesResponse(object):
             elif fid == 2:
                 if ftype == TType.SET:
                     self.roles = set()
-                    (_etype59, _size56) = iprot.readSetBegin()
-                    for _i60 in range(_size56):
-                        _elem61 = TSentryRole()
-                        _elem61.read(iprot)
-                        self.roles.add(_elem61)
+                    (_etype45, _size42) = iprot.readSetBegin()
+                    for _i46 in range(_size42):
+                        _elem47 = TSentryRole()
+                        _elem47.read(iprot)
+                        self.roles.add(_elem47)
                     iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
@@ -1901,8 +1471,8 @@ class TListSentryRolesResponse(object):
         if self.roles is not None:
             oprot.writeFieldBegin('roles', TType.SET, 2)
             oprot.writeSetBegin(TType.STRUCT, len(self.roles))
-            for iter62 in self.roles:
-                iter62.write(oprot)
+            for iter48 in self.roles:
+                iter48.write(oprot)
             oprot.writeSetEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
@@ -2034,16 +1604,14 @@ class TListSentryPrivilegesRequest(object):
      - requestorUserName
      - roleName
      - authorizableHierarchy
-     - principalName
     """
 
 
-    def __init__(self, protocol_version=2, requestorUserName=None, roleName=None, authorizableHierarchy=None, principalName=None,):
+    def __init__(self, protocol_version=2, requestorUserName=None, roleName=None, authorizableHierarchy=None,):
         self.protocol_version = protocol_version
         self.requestorUserName = requestorUserName
         self.roleName = roleName
         self.authorizableHierarchy = authorizableHierarchy
-        self.principalName = principalName
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -2075,11 +1643,6 @@ class TListSentryPrivilegesRequest(object):
                     self.authorizableHierarchy.read(iprot)
                 else:
                     iprot.skip(ftype)
-            elif fid == 6:
-                if ftype == TType.STRING:
-                    self.principalName = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -2105,10 +1668,6 @@ class TListSentryPrivilegesRequest(object):
         if self.authorizableHierarchy is not None:
             oprot.writeFieldBegin('authorizableHierarchy', TType.STRUCT, 5)
             self.authorizableHierarchy.write(oprot)
-            oprot.writeFieldEnd()
-        if self.principalName is not None:
-            oprot.writeFieldBegin('principalName', TType.STRING, 6)
-            oprot.writeString(self.principalName.encode('utf-8') if sys.version_info[0] == 2 else self.principalName)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -2164,11 +1723,11 @@ class TListSentryPrivilegesResponse(object):
             elif fid == 2:
                 if ftype == TType.SET:
                     self.privileges = set()
-                    (_etype66, _size63) = iprot.readSetBegin()
-                    for _i67 in range(_size63):
-                        _elem68 = TSentryPrivilege()
-                        _elem68.read(iprot)
-                        self.privileges.add(_elem68)
+                    (_etype52, _size49) = iprot.readSetBegin()
+                    for _i53 in range(_size49):
+                        _elem54 = TSentryPrivilege()
+                        _elem54.read(iprot)
+                        self.privileges.add(_elem54)
                     iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
@@ -2189,8 +1748,8 @@ class TListSentryPrivilegesResponse(object):
         if self.privileges is not None:
             oprot.writeFieldBegin('privileges', TType.SET, 2)
             oprot.writeSetBegin(TType.STRUCT, len(self.privileges))
-            for iter69 in self.privileges:
-                iter69.write(oprot)
+            for iter55 in self.privileges:
+                iter55.write(oprot)
             oprot.writeSetEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
@@ -2544,10 +2103,10 @@ class TSentryActiveRoleSet(object):
             elif fid == 2:
                 if ftype == TType.SET:
                     self.roles = set()
-                    (_etype73, _size70) = iprot.readSetBegin()
-                    for _i74 in range(_size70):
-                        _elem75 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.roles.add(_elem75)
+                    (_etype59, _size56) = iprot.readSetBegin()
+                    for _i60 in range(_size56):
+                        _elem61 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        self.roles.add(_elem61)
                     iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
@@ -2568,8 +2127,8 @@ class TSentryActiveRoleSet(object):
         if self.roles is not None:
             oprot.writeFieldBegin('roles', TType.SET, 2)
             oprot.writeSetBegin(TType.STRING, len(self.roles))
-            for iter76 in self.roles:
-                oprot.writeString(iter76.encode('utf-8') if sys.version_info[0] == 2 else iter76)
+            for iter62 in self.roles:
+                oprot.writeString(iter62.encode('utf-8') if sys.version_info[0] == 2 else iter62)
             oprot.writeSetEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
@@ -2601,16 +2160,14 @@ class TListSentryPrivilegesForProviderRequest(object):
      - groups
      - roleSet
      - authorizableHierarchy
-     - users
     """
 
 
-    def __init__(self, protocol_version=2, groups=None, roleSet=None, authorizableHierarchy=None, users=None,):
+    def __init__(self, protocol_version=2, groups=None, roleSet=None, authorizableHierarchy=None,):
         self.protocol_version = protocol_version
         self.groups = groups
         self.roleSet = roleSet
         self.authorizableHierarchy = authorizableHierarchy
-        self.users = users
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -2629,10 +2186,10 @@ class TListSentryPrivilegesForProviderRequest(object):
             elif fid == 2:
                 if ftype == TType.SET:
                     self.groups = set()
-                    (_etype80, _size77) = iprot.readSetBegin()
-                    for _i81 in range(_size77):
-                        _elem82 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.groups.add(_elem82)
+                    (_etype66, _size63) = iprot.readSetBegin()
+                    for _i67 in range(_size63):
+                        _elem68 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        self.groups.add(_elem68)
                     iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
@@ -2646,16 +2203,6 @@ class TListSentryPrivilegesForProviderRequest(object):
                 if ftype == TType.STRUCT:
                     self.authorizableHierarchy = TSentryAuthorizable()
                     self.authorizableHierarchy.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            elif fid == 5:
-                if ftype == TType.SET:
-                    self.users = set()
-                    (_etype86, _size83) = iprot.readSetBegin()
-                    for _i87 in range(_size83):
-                        _elem88 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.users.add(_elem88)
-                    iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -2675,8 +2222,8 @@ class TListSentryPrivilegesForProviderRequest(object):
         if self.groups is not None:
             oprot.writeFieldBegin('groups', TType.SET, 2)
             oprot.writeSetBegin(TType.STRING, len(self.groups))
-            for iter89 in self.groups:
-                oprot.writeString(iter89.encode('utf-8') if sys.version_info[0] == 2 else iter89)
+            for iter69 in self.groups:
+                oprot.writeString(iter69.encode('utf-8') if sys.version_info[0] == 2 else iter69)
             oprot.writeSetEnd()
             oprot.writeFieldEnd()
         if self.roleSet is not None:
@@ -2686,13 +2233,6 @@ class TListSentryPrivilegesForProviderRequest(object):
         if self.authorizableHierarchy is not None:
             oprot.writeFieldBegin('authorizableHierarchy', TType.STRUCT, 4)
             self.authorizableHierarchy.write(oprot)
-            oprot.writeFieldEnd()
-        if self.users is not None:
-            oprot.writeFieldBegin('users', TType.SET, 5)
-            oprot.writeSetBegin(TType.STRING, len(self.users))
-            for iter90 in self.users:
-                oprot.writeString(iter90.encode('utf-8') if sys.version_info[0] == 2 else iter90)
-            oprot.writeSetEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -2748,10 +2288,10 @@ class TListSentryPrivilegesForProviderResponse(object):
             elif fid == 2:
                 if ftype == TType.SET:
                     self.privileges = set()
-                    (_etype94, _size91) = iprot.readSetBegin()
-                    for _i95 in range(_size91):
-                        _elem96 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.privileges.add(_elem96)
+                    (_etype73, _size70) = iprot.readSetBegin()
+                    for _i74 in range(_size70):
+                        _elem75 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        self.privileges.add(_elem75)
                     iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
@@ -2772,8 +2312,8 @@ class TListSentryPrivilegesForProviderResponse(object):
         if self.privileges is not None:
             oprot.writeFieldBegin('privileges', TType.SET, 2)
             oprot.writeSetBegin(TType.STRING, len(self.privileges))
-            for iter97 in self.privileges:
-                oprot.writeString(iter97.encode('utf-8') if sys.version_info[0] == 2 else iter97)
+            for iter76 in self.privileges:
+                oprot.writeString(iter76.encode('utf-8') if sys.version_info[0] == 2 else iter76)
             oprot.writeSetEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
@@ -2820,17 +2360,17 @@ class TSentryPrivilegeMap(object):
             if fid == 1:
                 if ftype == TType.MAP:
                     self.privilegeMap = {}
-                    (_ktype99, _vtype100, _size98) = iprot.readMapBegin()
-                    for _i102 in range(_size98):
-                        _key103 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val104 = set()
-                        (_etype108, _size105) = iprot.readSetBegin()
-                        for _i109 in range(_size105):
-                            _elem110 = TSentryPrivilege()
-                            _elem110.read(iprot)
-                            _val104.add(_elem110)
+                    (_ktype78, _vtype79, _size77) = iprot.readMapBegin()
+                    for _i81 in range(_size77):
+                        _key82 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        _val83 = set()
+                        (_etype87, _size84) = iprot.readSetBegin()
+                        for _i88 in range(_size84):
+                            _elem89 = TSentryPrivilege()
+                            _elem89.read(iprot)
+                            _val83.add(_elem89)
                         iprot.readSetEnd()
-                        self.privilegeMap[_key103] = _val104
+                        self.privilegeMap[_key82] = _val83
                     iprot.readMapEnd()
                 else:
                     iprot.skip(ftype)
@@ -2847,11 +2387,11 @@ class TSentryPrivilegeMap(object):
         if self.privilegeMap is not None:
             oprot.writeFieldBegin('privilegeMap', TType.MAP, 1)
             oprot.writeMapBegin(TType.STRING, TType.SET, len(self.privilegeMap))
-            for kiter111, viter112 in self.privilegeMap.items():
-                oprot.writeString(kiter111.encode('utf-8') if sys.version_info[0] == 2 else kiter111)
-                oprot.writeSetBegin(TType.STRUCT, len(viter112))
-                for iter113 in viter112:
-                    iter113.write(oprot)
+            for kiter90, viter91 in self.privilegeMap.items():
+                oprot.writeString(kiter90.encode('utf-8') if sys.version_info[0] == 2 else kiter90)
+                oprot.writeSetBegin(TType.STRUCT, len(viter91))
+                for iter92 in viter91:
+                    iter92.write(oprot)
                 oprot.writeSetEnd()
             oprot.writeMapEnd()
             oprot.writeFieldEnd()
@@ -2883,17 +2423,15 @@ class TListSentryPrivilegesByAuthRequest(object):
      - authorizableSet
      - groups
      - roleSet
-     - users
     """
 
 
-    def __init__(self, protocol_version=2, requestorUserName=None, authorizableSet=None, groups=None, roleSet=None, users=None,):
+    def __init__(self, protocol_version=2, requestorUserName=None, authorizableSet=None, groups=None, roleSet=None,):
         self.protocol_version = protocol_version
         self.requestorUserName = requestorUserName
         self.authorizableSet = authorizableSet
         self.groups = groups
         self.roleSet = roleSet
-        self.users = users
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -2917,21 +2455,21 @@ class TListSentryPrivilegesByAuthRequest(object):
             elif fid == 3:
                 if ftype == TType.SET:
                     self.authorizableSet = set()
-                    (_etype117, _size114) = iprot.readSetBegin()
-                    for _i118 in range(_size114):
-                        _elem119 = TSentryAuthorizable()
-                        _elem119.read(iprot)
-                        self.authorizableSet.add(_elem119)
+                    (_etype96, _size93) = iprot.readSetBegin()
+                    for _i97 in range(_size93):
+                        _elem98 = TSentryAuthorizable()
+                        _elem98.read(iprot)
+                        self.authorizableSet.add(_elem98)
                     iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
             elif fid == 4:
                 if ftype == TType.SET:
                     self.groups = set()
-                    (_etype123, _size120) = iprot.readSetBegin()
-                    for _i124 in range(_size120):
-                        _elem125 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.groups.add(_elem125)
+                    (_etype102, _size99) = iprot.readSetBegin()
+                    for _i103 in range(_size99):
+                        _elem104 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        self.groups.add(_elem104)
                     iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
@@ -2939,16 +2477,6 @@ class TListSentryPrivilegesByAuthRequest(object):
                 if ftype == TType.STRUCT:
                     self.roleSet = TSentryActiveRoleSet()
                     self.roleSet.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            elif fid == 6:
-                if ftype == TType.SET:
-                    self.users = set()
-                    (_etype129, _size126) = iprot.readSetBegin()
-                    for _i130 in range(_size126):
-                        _elem131 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.users.add(_elem131)
-                    iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -2972,27 +2500,20 @@ class TListSentryPrivilegesByAuthRequest(object):
         if self.authorizableSet is not None:
             oprot.writeFieldBegin('authorizableSet', TType.SET, 3)
             oprot.writeSetBegin(TType.STRUCT, len(self.authorizableSet))
-            for iter132 in self.authorizableSet:
-                iter132.write(oprot)
+            for iter105 in self.authorizableSet:
+                iter105.write(oprot)
             oprot.writeSetEnd()
             oprot.writeFieldEnd()
         if self.groups is not None:
             oprot.writeFieldBegin('groups', TType.SET, 4)
             oprot.writeSetBegin(TType.STRING, len(self.groups))
-            for iter133 in self.groups:
-                oprot.writeString(iter133.encode('utf-8') if sys.version_info[0] == 2 else iter133)
+            for iter106 in self.groups:
+                oprot.writeString(iter106.encode('utf-8') if sys.version_info[0] == 2 else iter106)
             oprot.writeSetEnd()
             oprot.writeFieldEnd()
         if self.roleSet is not None:
             oprot.writeFieldBegin('roleSet', TType.STRUCT, 5)
             self.roleSet.write(oprot)
-            oprot.writeFieldEnd()
-        if self.users is not None:
-            oprot.writeFieldBegin('users', TType.SET, 6)
-            oprot.writeSetBegin(TType.STRING, len(self.users))
-            for iter134 in self.users:
-                oprot.writeString(iter134.encode('utf-8') if sys.version_info[0] == 2 else iter134)
-            oprot.writeSetEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -3023,14 +2544,12 @@ class TListSentryPrivilegesByAuthResponse(object):
     Attributes:
      - status
      - privilegesMapByAuth
-     - privilegesMapByAuthForUsers
     """
 
 
-    def __init__(self, status=None, privilegesMapByAuth=None, privilegesMapByAuthForUsers=None,):
+    def __init__(self, status=None, privilegesMapByAuth=None,):
         self.status = status
         self.privilegesMapByAuth = privilegesMapByAuth
-        self.privilegesMapByAuthForUsers = privilegesMapByAuthForUsers
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -3050,26 +2569,13 @@ class TListSentryPrivilegesByAuthResponse(object):
             elif fid == 2:
                 if ftype == TType.MAP:
                     self.privilegesMapByAuth = {}
-                    (_ktype136, _vtype137, _size135) = iprot.readMapBegin()
-                    for _i139 in range(_size135):
-                        _key140 = TSentryAuthorizable()
-                        _key140.read(iprot)
-                        _val141 = TSentryPrivilegeMap()
-                        _val141.read(iprot)
-                        self.privilegesMapByAuth[_key140] = _val141
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.MAP:
-                    self.privilegesMapByAuthForUsers = {}
-                    (_ktype143, _vtype144, _size142) = iprot.readMapBegin()
-                    for _i146 in range(_size142):
-                        _key147 = TSentryAuthorizable()
-                        _key147.read(iprot)
-                        _val148 = TSentryPrivilegeMap()
-                        _val148.read(iprot)
-                        self.privilegesMapByAuthForUsers[_key147] = _val148
+                    (_ktype108, _vtype109, _size107) = iprot.readMapBegin()
+                    for _i111 in range(_size107):
+                        _key112 = TSentryAuthorizable()
+                        _key112.read(iprot)
+                        _val113 = TSentryPrivilegeMap()
+                        _val113.read(iprot)
+                        self.privilegesMapByAuth[_key112] = _val113
                     iprot.readMapEnd()
                 else:
                     iprot.skip(ftype)
@@ -3090,17 +2596,9 @@ class TListSentryPrivilegesByAuthResponse(object):
         if self.privilegesMapByAuth is not None:
             oprot.writeFieldBegin('privilegesMapByAuth', TType.MAP, 2)
             oprot.writeMapBegin(TType.STRUCT, TType.STRUCT, len(self.privilegesMapByAuth))
-            for kiter149, viter150 in self.privilegesMapByAuth.items():
-                kiter149.write(oprot)
-                viter150.write(oprot)
-            oprot.writeMapEnd()
-            oprot.writeFieldEnd()
-        if self.privilegesMapByAuthForUsers is not None:
-            oprot.writeFieldBegin('privilegesMapByAuthForUsers', TType.MAP, 3)
-            oprot.writeMapBegin(TType.STRUCT, TType.STRUCT, len(self.privilegesMapByAuthForUsers))
-            for kiter151, viter152 in self.privilegesMapByAuthForUsers.items():
-                kiter151.write(oprot)
-                viter152.write(oprot)
+            for kiter114, viter115 in self.privilegesMapByAuth.items():
+                kiter114.write(oprot)
+                viter115.write(oprot)
             oprot.writeMapEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
@@ -3275,451 +2773,6 @@ class TSentryConfigValueResponse(object):
         return not (self == other)
 
 
-class TSentryMappingData(object):
-    """
-    Attributes:
-     - groupRolesMap
-     - rolePrivilegesMap
-     - userRolesMap
-    """
-
-
-    def __init__(self, groupRolesMap=None, rolePrivilegesMap=None, userRolesMap=None,):
-        self.groupRolesMap = groupRolesMap
-        self.rolePrivilegesMap = rolePrivilegesMap
-        self.userRolesMap = userRolesMap
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.MAP:
-                    self.groupRolesMap = {}
-                    (_ktype154, _vtype155, _size153) = iprot.readMapBegin()
-                    for _i157 in range(_size153):
-                        _key158 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val159 = set()
-                        (_etype163, _size160) = iprot.readSetBegin()
-                        for _i164 in range(_size160):
-                            _elem165 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                            _val159.add(_elem165)
-                        iprot.readSetEnd()
-                        self.groupRolesMap[_key158] = _val159
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.MAP:
-                    self.rolePrivilegesMap = {}
-                    (_ktype167, _vtype168, _size166) = iprot.readMapBegin()
-                    for _i170 in range(_size166):
-                        _key171 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val172 = set()
-                        (_etype176, _size173) = iprot.readSetBegin()
-                        for _i177 in range(_size173):
-                            _elem178 = TSentryPrivilege()
-                            _elem178.read(iprot)
-                            _val172.add(_elem178)
-                        iprot.readSetEnd()
-                        self.rolePrivilegesMap[_key171] = _val172
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.MAP:
-                    self.userRolesMap = {}
-                    (_ktype180, _vtype181, _size179) = iprot.readMapBegin()
-                    for _i183 in range(_size179):
-                        _key184 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val185 = set()
-                        (_etype189, _size186) = iprot.readSetBegin()
-                        for _i190 in range(_size186):
-                            _elem191 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                            _val185.add(_elem191)
-                        iprot.readSetEnd()
-                        self.userRolesMap[_key184] = _val185
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TSentryMappingData')
-        if self.groupRolesMap is not None:
-            oprot.writeFieldBegin('groupRolesMap', TType.MAP, 1)
-            oprot.writeMapBegin(TType.STRING, TType.SET, len(self.groupRolesMap))
-            for kiter192, viter193 in self.groupRolesMap.items():
-                oprot.writeString(kiter192.encode('utf-8') if sys.version_info[0] == 2 else kiter192)
-                oprot.writeSetBegin(TType.STRING, len(viter193))
-                for iter194 in viter193:
-                    oprot.writeString(iter194.encode('utf-8') if sys.version_info[0] == 2 else iter194)
-                oprot.writeSetEnd()
-            oprot.writeMapEnd()
-            oprot.writeFieldEnd()
-        if self.rolePrivilegesMap is not None:
-            oprot.writeFieldBegin('rolePrivilegesMap', TType.MAP, 2)
-            oprot.writeMapBegin(TType.STRING, TType.SET, len(self.rolePrivilegesMap))
-            for kiter195, viter196 in self.rolePrivilegesMap.items():
-                oprot.writeString(kiter195.encode('utf-8') if sys.version_info[0] == 2 else kiter195)
-                oprot.writeSetBegin(TType.STRUCT, len(viter196))
-                for iter197 in viter196:
-                    iter197.write(oprot)
-                oprot.writeSetEnd()
-            oprot.writeMapEnd()
-            oprot.writeFieldEnd()
-        if self.userRolesMap is not None:
-            oprot.writeFieldBegin('userRolesMap', TType.MAP, 3)
-            oprot.writeMapBegin(TType.STRING, TType.SET, len(self.userRolesMap))
-            for kiter198, viter199 in self.userRolesMap.items():
-                oprot.writeString(kiter198.encode('utf-8') if sys.version_info[0] == 2 else kiter198)
-                oprot.writeSetBegin(TType.STRING, len(viter199))
-                for iter200 in viter199:
-                    oprot.writeString(iter200.encode('utf-8') if sys.version_info[0] == 2 else iter200)
-                oprot.writeSetEnd()
-            oprot.writeMapEnd()
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
-class TSentryExportMappingDataRequest(object):
-    """
-    Attributes:
-     - protocol_version
-     - requestorUserName
-     - objectPath
-    """
-
-
-    def __init__(self, protocol_version=1, requestorUserName=None, objectPath=None,):
-        self.protocol_version = protocol_version
-        self.requestorUserName = requestorUserName
-        self.objectPath = objectPath
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.I32:
-                    self.protocol_version = iprot.readI32()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.STRING:
-                    self.requestorUserName = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.STRING:
-                    self.objectPath = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TSentryExportMappingDataRequest')
-        if self.protocol_version is not None:
-            oprot.writeFieldBegin('protocol_version', TType.I32, 1)
-            oprot.writeI32(self.protocol_version)
-            oprot.writeFieldEnd()
-        if self.requestorUserName is not None:
-            oprot.writeFieldBegin('requestorUserName', TType.STRING, 2)
-            oprot.writeString(self.requestorUserName.encode('utf-8') if sys.version_info[0] == 2 else self.requestorUserName)
-            oprot.writeFieldEnd()
-        if self.objectPath is not None:
-            oprot.writeFieldBegin('objectPath', TType.STRING, 3)
-            oprot.writeString(self.objectPath.encode('utf-8') if sys.version_info[0] == 2 else self.objectPath)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.protocol_version is None:
-            raise TProtocolException(message='Required field protocol_version is unset!')
-        if self.requestorUserName is None:
-            raise TProtocolException(message='Required field requestorUserName is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
-class TSentryExportMappingDataResponse(object):
-    """
-    Attributes:
-     - status
-     - mappingData
-    """
-
-
-    def __init__(self, status=None, mappingData=None,):
-        self.status = status
-        self.mappingData = mappingData
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.STRUCT:
-                    self.status = sentry_common_service.ttypes.TSentryResponseStatus()
-                    self.status.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.STRUCT:
-                    self.mappingData = TSentryMappingData()
-                    self.mappingData.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TSentryExportMappingDataResponse')
-        if self.status is not None:
-            oprot.writeFieldBegin('status', TType.STRUCT, 1)
-            self.status.write(oprot)
-            oprot.writeFieldEnd()
-        if self.mappingData is not None:
-            oprot.writeFieldBegin('mappingData', TType.STRUCT, 2)
-            self.mappingData.write(oprot)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.status is None:
-            raise TProtocolException(message='Required field status is unset!')
-        if self.mappingData is None:
-            raise TProtocolException(message='Required field mappingData is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
-class TSentryImportMappingDataRequest(object):
-    """
-    Attributes:
-     - protocol_version
-     - requestorUserName
-     - overwriteRole
-     - mappingData
-    """
-
-
-    def __init__(self, protocol_version=1, requestorUserName=None, overwriteRole=False, mappingData=None,):
-        self.protocol_version = protocol_version
-        self.requestorUserName = requestorUserName
-        self.overwriteRole = overwriteRole
-        self.mappingData = mappingData
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.I32:
-                    self.protocol_version = iprot.readI32()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.STRING:
-                    self.requestorUserName = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.BOOL:
-                    self.overwriteRole = iprot.readBool()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 4:
-                if ftype == TType.STRUCT:
-                    self.mappingData = TSentryMappingData()
-                    self.mappingData.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TSentryImportMappingDataRequest')
-        if self.protocol_version is not None:
-            oprot.writeFieldBegin('protocol_version', TType.I32, 1)
-            oprot.writeI32(self.protocol_version)
-            oprot.writeFieldEnd()
-        if self.requestorUserName is not None:
-            oprot.writeFieldBegin('requestorUserName', TType.STRING, 2)
-            oprot.writeString(self.requestorUserName.encode('utf-8') if sys.version_info[0] == 2 else self.requestorUserName)
-            oprot.writeFieldEnd()
-        if self.overwriteRole is not None:
-            oprot.writeFieldBegin('overwriteRole', TType.BOOL, 3)
-            oprot.writeBool(self.overwriteRole)
-            oprot.writeFieldEnd()
-        if self.mappingData is not None:
-            oprot.writeFieldBegin('mappingData', TType.STRUCT, 4)
-            self.mappingData.write(oprot)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.protocol_version is None:
-            raise TProtocolException(message='Required field protocol_version is unset!')
-        if self.requestorUserName is None:
-            raise TProtocolException(message='Required field requestorUserName is unset!')
-        if self.overwriteRole is None:
-            raise TProtocolException(message='Required field overwriteRole is unset!')
-        if self.mappingData is None:
-            raise TProtocolException(message='Required field mappingData is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
-class TSentryImportMappingDataResponse(object):
-    """
-    Attributes:
-     - status
-    """
-
-
-    def __init__(self, status=None,):
-        self.status = status
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.STRUCT:
-                    self.status = sentry_common_service.ttypes.TSentryResponseStatus()
-                    self.status.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TSentryImportMappingDataResponse')
-        if self.status is not None:
-            oprot.writeFieldBegin('status', TType.STRUCT, 1)
-            self.status.write(oprot)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.status is None:
-            raise TProtocolException(message='Required field status is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
 class TSentrySyncIDRequest(object):
     """
     Attributes:
@@ -3861,383 +2914,6 @@ class TSentrySyncIDResponse(object):
 
     def __ne__(self, other):
         return not (self == other)
-
-
-class TSentryHmsEventNotification(object):
-    """
-    Attributes:
-     - protocol_version
-     - requestorUserName
-     - id
-     - eventType
-     - authorizable
-     - ownerType
-     - ownerName
-    """
-
-
-    def __init__(self, protocol_version=2, requestorUserName=None, id=None, eventType=None, authorizable=None, ownerType=None, ownerName=None,):
-        self.protocol_version = protocol_version
-        self.requestorUserName = requestorUserName
-        self.id = id
-        self.eventType = eventType
-        self.authorizable = authorizable
-        self.ownerType = ownerType
-        self.ownerName = ownerName
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.I32:
-                    self.protocol_version = iprot.readI32()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.STRING:
-                    self.requestorUserName = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.I64:
-                    self.id = iprot.readI64()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 4:
-                if ftype == TType.STRING:
-                    self.eventType = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 5:
-                if ftype == TType.STRUCT:
-                    self.authorizable = TSentryAuthorizable()
-                    self.authorizable.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            elif fid == 6:
-                if ftype == TType.I32:
-                    self.ownerType = iprot.readI32()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 7:
-                if ftype == TType.STRING:
-                    self.ownerName = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TSentryHmsEventNotification')
-        if self.protocol_version is not None:
-            oprot.writeFieldBegin('protocol_version', TType.I32, 1)
-            oprot.writeI32(self.protocol_version)
-            oprot.writeFieldEnd()
-        if self.requestorUserName is not None:
-            oprot.writeFieldBegin('requestorUserName', TType.STRING, 2)
-            oprot.writeString(self.requestorUserName.encode('utf-8') if sys.version_info[0] == 2 else self.requestorUserName)
-            oprot.writeFieldEnd()
-        if self.id is not None:
-            oprot.writeFieldBegin('id', TType.I64, 3)
-            oprot.writeI64(self.id)
-            oprot.writeFieldEnd()
-        if self.eventType is not None:
-            oprot.writeFieldBegin('eventType', TType.STRING, 4)
-            oprot.writeString(self.eventType.encode('utf-8') if sys.version_info[0] == 2 else self.eventType)
-            oprot.writeFieldEnd()
-        if self.authorizable is not None:
-            oprot.writeFieldBegin('authorizable', TType.STRUCT, 5)
-            self.authorizable.write(oprot)
-            oprot.writeFieldEnd()
-        if self.ownerType is not None:
-            oprot.writeFieldBegin('ownerType', TType.I32, 6)
-            oprot.writeI32(self.ownerType)
-            oprot.writeFieldEnd()
-        if self.ownerName is not None:
-            oprot.writeFieldBegin('ownerName', TType.STRING, 7)
-            oprot.writeString(self.ownerName.encode('utf-8') if sys.version_info[0] == 2 else self.ownerName)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.protocol_version is None:
-            raise TProtocolException(message='Required field protocol_version is unset!')
-        if self.requestorUserName is None:
-            raise TProtocolException(message='Required field requestorUserName is unset!')
-        if self.id is None:
-            raise TProtocolException(message='Required field id is unset!')
-        if self.eventType is None:
-            raise TProtocolException(message='Required field eventType is unset!')
-        if self.authorizable is None:
-            raise TProtocolException(message='Required field authorizable is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
-class TSentryHmsEventNotificationResponse(object):
-    """
-    Attributes:
-     - status
-     - id
-    """
-
-
-    def __init__(self, status=None, id=None,):
-        self.status = status
-        self.id = id
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.STRUCT:
-                    self.status = sentry_common_service.ttypes.TSentryResponseStatus()
-                    self.status.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.I64:
-                    self.id = iprot.readI64()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TSentryHmsEventNotificationResponse')
-        if self.status is not None:
-            oprot.writeFieldBegin('status', TType.STRUCT, 1)
-            self.status.write(oprot)
-            oprot.writeFieldEnd()
-        if self.id is not None:
-            oprot.writeFieldBegin('id', TType.I64, 2)
-            oprot.writeI64(self.id)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.status is None:
-            raise TProtocolException(message='Required field status is unset!')
-        if self.id is None:
-            raise TProtocolException(message='Required field id is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
-class TSentryPrivilegesRequest(object):
-    """
-    API that requests all roles and users privileges from the Sentry server.
-
-
-    Attributes:
-     - protocol_version
-     - requestorUserName
-    """
-
-
-    def __init__(self, protocol_version=2, requestorUserName=None,):
-        self.protocol_version = protocol_version
-        self.requestorUserName = requestorUserName
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.I32:
-                    self.protocol_version = iprot.readI32()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.STRING:
-                    self.requestorUserName = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TSentryPrivilegesRequest')
-        if self.protocol_version is not None:
-            oprot.writeFieldBegin('protocol_version', TType.I32, 1)
-            oprot.writeI32(self.protocol_version)
-            oprot.writeFieldEnd()
-        if self.requestorUserName is not None:
-            oprot.writeFieldBegin('requestorUserName', TType.STRING, 2)
-            oprot.writeString(self.requestorUserName.encode('utf-8') if sys.version_info[0] == 2 else self.requestorUserName)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.protocol_version is None:
-            raise TProtocolException(message='Required field protocol_version is unset!')
-        if self.requestorUserName is None:
-            raise TProtocolException(message='Required field requestorUserName is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-
-
-class TSentryPrivilegesResponse(object):
-    """
-    API that returns either all users or roles privileges found on the Sentry server.
-
-    The response returns a mapping object that maps the role or user name to the privileges
-    they have in the server. An empty set of privileges may be returned to each role or user
-    name. Null values are not returned.
-
-
-    Attributes:
-     - status
-     - privilegesMap
-    """
-
-
-    def __init__(self, status=None, privilegesMap=None,):
-        self.status = status
-        self.privilegesMap = privilegesMap
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.STRUCT:
-                    self.status = sentry_common_service.ttypes.TSentryResponseStatus()
-                    self.status.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.MAP:
-                    self.privilegesMap = {}
-                    (_ktype202, _vtype203, _size201) = iprot.readMapBegin()
-                    for _i205 in range(_size201):
-                        _key206 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val207 = set()
-                        (_etype211, _size208) = iprot.readSetBegin()
-                        for _i212 in range(_size208):
-                            _elem213 = TSentryPrivilege()
-                            _elem213.read(iprot)
-                            _val207.add(_elem213)
-                        iprot.readSetEnd()
-                        self.privilegesMap[_key206] = _val207
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('TSentryPrivilegesResponse')
-        if self.status is not None:
-            oprot.writeFieldBegin('status', TType.STRUCT, 1)
-            self.status.write(oprot)
-            oprot.writeFieldEnd()
-        if self.privilegesMap is not None:
-            oprot.writeFieldBegin('privilegesMap', TType.MAP, 2)
-            oprot.writeMapBegin(TType.STRING, TType.SET, len(self.privilegesMap))
-            for kiter214, viter215 in self.privilegesMap.items():
-                oprot.writeString(kiter214.encode('utf-8') if sys.version_info[0] == 2 else kiter214)
-                oprot.writeSetBegin(TType.STRUCT, len(viter215))
-                for iter216 in viter215:
-                    iter216.write(oprot)
-                oprot.writeSetEnd()
-            oprot.writeMapEnd()
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        if self.status is None:
-            raise TProtocolException(message='Required field status is unset!')
-        if self.privilegesMap is None:
-            raise TProtocolException(message='Required field privilegesMap is unset!')
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
 all_structs.append(TSentryPrivilege)
 TSentryPrivilege.thrift_spec = (
     None,  # 0
@@ -4295,19 +2971,6 @@ TAlterSentryRoleAddGroupsResponse.thrift_spec = (
     None,  # 0
     (1, TType.STRUCT, 'status', [sentry_common_service.ttypes.TSentryResponseStatus, None], None, ),  # 1
 )
-all_structs.append(TAlterSentryRoleAddUsersRequest)
-TAlterSentryRoleAddUsersRequest.thrift_spec = (
-    None,  # 0
-    (1, TType.I32, 'protocol_version', None, 1, ),  # 1
-    (2, TType.STRING, 'requestorUserName', 'UTF8', None, ),  # 2
-    (3, TType.STRING, 'roleName', 'UTF8', None, ),  # 3
-    (4, TType.SET, 'users', (TType.STRING, 'UTF8', False), None, ),  # 4
-)
-all_structs.append(TAlterSentryRoleAddUsersResponse)
-TAlterSentryRoleAddUsersResponse.thrift_spec = (
-    None,  # 0
-    (1, TType.STRUCT, 'status', [sentry_common_service.ttypes.TSentryResponseStatus, None], None, ),  # 1
-)
 all_structs.append(TAlterSentryRoleDeleteGroupsRequest)
 TAlterSentryRoleDeleteGroupsRequest.thrift_spec = (
     None,  # 0
@@ -4319,19 +2982,6 @@ TAlterSentryRoleDeleteGroupsRequest.thrift_spec = (
 )
 all_structs.append(TAlterSentryRoleDeleteGroupsResponse)
 TAlterSentryRoleDeleteGroupsResponse.thrift_spec = (
-    None,  # 0
-    (1, TType.STRUCT, 'status', [sentry_common_service.ttypes.TSentryResponseStatus, None], None, ),  # 1
-)
-all_structs.append(TAlterSentryRoleDeleteUsersRequest)
-TAlterSentryRoleDeleteUsersRequest.thrift_spec = (
-    None,  # 0
-    (1, TType.I32, 'protocol_version', None, 1, ),  # 1
-    (2, TType.STRING, 'requestorUserName', 'UTF8', None, ),  # 2
-    (3, TType.STRING, 'roleName', 'UTF8', None, ),  # 3
-    (4, TType.SET, 'users', (TType.STRING, 'UTF8', False), None, ),  # 4
-)
-all_structs.append(TAlterSentryRoleDeleteUsersResponse)
-TAlterSentryRoleDeleteUsersResponse.thrift_spec = (
     None,  # 0
     (1, TType.STRUCT, 'status', [sentry_common_service.ttypes.TSentryResponseStatus, None], None, ),  # 1
 )
@@ -4374,13 +3024,6 @@ TListSentryRolesRequest.thrift_spec = (
     (2, TType.STRING, 'requestorUserName', 'UTF8', None, ),  # 2
     (3, TType.STRING, 'groupName', 'UTF8', None, ),  # 3
 )
-all_structs.append(TListSentryRolesForUserRequest)
-TListSentryRolesForUserRequest.thrift_spec = (
-    None,  # 0
-    (1, TType.I32, 'protocol_version', None, 1, ),  # 1
-    (2, TType.STRING, 'requestorUserName', 'UTF8', None, ),  # 2
-    (3, TType.STRING, 'userName', 'UTF8', None, ),  # 3
-)
 all_structs.append(TSentryRole)
 TSentryRole.thrift_spec = (
     None,  # 0
@@ -4411,7 +3054,6 @@ TListSentryPrivilegesRequest.thrift_spec = (
     None,  # 3
     (4, TType.STRING, 'roleName', 'UTF8', None, ),  # 4
     (5, TType.STRUCT, 'authorizableHierarchy', [TSentryAuthorizable, None], None, ),  # 5
-    (6, TType.STRING, 'principalName', 'UTF8', None, ),  # 6
 )
 all_structs.append(TListSentryPrivilegesResponse)
 TListSentryPrivilegesResponse.thrift_spec = (
@@ -4457,7 +3099,6 @@ TListSentryPrivilegesForProviderRequest.thrift_spec = (
     (2, TType.SET, 'groups', (TType.STRING, 'UTF8', False), None, ),  # 2
     (3, TType.STRUCT, 'roleSet', [TSentryActiveRoleSet, None], None, ),  # 3
     (4, TType.STRUCT, 'authorizableHierarchy', [TSentryAuthorizable, None], None, ),  # 4
-    (5, TType.SET, 'users', (TType.STRING, 'UTF8', False), None, ),  # 5
 )
 all_structs.append(TListSentryPrivilegesForProviderResponse)
 TListSentryPrivilegesForProviderResponse.thrift_spec = (
@@ -4478,14 +3119,12 @@ TListSentryPrivilegesByAuthRequest.thrift_spec = (
     (3, TType.SET, 'authorizableSet', (TType.STRUCT, [TSentryAuthorizable, None], False), None, ),  # 3
     (4, TType.SET, 'groups', (TType.STRING, 'UTF8', False), None, ),  # 4
     (5, TType.STRUCT, 'roleSet', [TSentryActiveRoleSet, None], None, ),  # 5
-    (6, TType.SET, 'users', (TType.STRING, 'UTF8', False), None, ),  # 6
 )
 all_structs.append(TListSentryPrivilegesByAuthResponse)
 TListSentryPrivilegesByAuthResponse.thrift_spec = (
     None,  # 0
     (1, TType.STRUCT, 'status', [sentry_common_service.ttypes.TSentryResponseStatus, None], None, ),  # 1
     (2, TType.MAP, 'privilegesMapByAuth', (TType.STRUCT, [TSentryAuthorizable, None], TType.STRUCT, [TSentryPrivilegeMap, None], False), None, ),  # 2
-    (3, TType.MAP, 'privilegesMapByAuthForUsers', (TType.STRUCT, [TSentryAuthorizable, None], TType.STRUCT, [TSentryPrivilegeMap, None], False), None, ),  # 3
 )
 all_structs.append(TSentryConfigValueRequest)
 TSentryConfigValueRequest.thrift_spec = (
@@ -4500,39 +3139,6 @@ TSentryConfigValueResponse.thrift_spec = (
     (1, TType.STRUCT, 'status', [sentry_common_service.ttypes.TSentryResponseStatus, None], None, ),  # 1
     (2, TType.STRING, 'value', 'UTF8', None, ),  # 2
 )
-all_structs.append(TSentryMappingData)
-TSentryMappingData.thrift_spec = (
-    None,  # 0
-    (1, TType.MAP, 'groupRolesMap', (TType.STRING, 'UTF8', TType.SET, (TType.STRING, 'UTF8', False), False), None, ),  # 1
-    (2, TType.MAP, 'rolePrivilegesMap', (TType.STRING, 'UTF8', TType.SET, (TType.STRUCT, [TSentryPrivilege, None], False), False), None, ),  # 2
-    (3, TType.MAP, 'userRolesMap', (TType.STRING, 'UTF8', TType.SET, (TType.STRING, 'UTF8', False), False), None, ),  # 3
-)
-all_structs.append(TSentryExportMappingDataRequest)
-TSentryExportMappingDataRequest.thrift_spec = (
-    None,  # 0
-    (1, TType.I32, 'protocol_version', None, 1, ),  # 1
-    (2, TType.STRING, 'requestorUserName', 'UTF8', None, ),  # 2
-    (3, TType.STRING, 'objectPath', 'UTF8', None, ),  # 3
-)
-all_structs.append(TSentryExportMappingDataResponse)
-TSentryExportMappingDataResponse.thrift_spec = (
-    None,  # 0
-    (1, TType.STRUCT, 'status', [sentry_common_service.ttypes.TSentryResponseStatus, None], None, ),  # 1
-    (2, TType.STRUCT, 'mappingData', [TSentryMappingData, None], None, ),  # 2
-)
-all_structs.append(TSentryImportMappingDataRequest)
-TSentryImportMappingDataRequest.thrift_spec = (
-    None,  # 0
-    (1, TType.I32, 'protocol_version', None, 1, ),  # 1
-    (2, TType.STRING, 'requestorUserName', 'UTF8', None, ),  # 2
-    (3, TType.BOOL, 'overwriteRole', None, False, ),  # 3
-    (4, TType.STRUCT, 'mappingData', [TSentryMappingData, None], None, ),  # 4
-)
-all_structs.append(TSentryImportMappingDataResponse)
-TSentryImportMappingDataResponse.thrift_spec = (
-    None,  # 0
-    (1, TType.STRUCT, 'status', [sentry_common_service.ttypes.TSentryResponseStatus, None], None, ),  # 1
-)
 all_structs.append(TSentrySyncIDRequest)
 TSentrySyncIDRequest.thrift_spec = (
     None,  # 0
@@ -4544,35 +3150,6 @@ TSentrySyncIDResponse.thrift_spec = (
     None,  # 0
     (1, TType.STRUCT, 'status', [sentry_common_service.ttypes.TSentryResponseStatus, None], None, ),  # 1
     (2, TType.I64, 'id', None, None, ),  # 2
-)
-all_structs.append(TSentryHmsEventNotification)
-TSentryHmsEventNotification.thrift_spec = (
-    None,  # 0
-    (1, TType.I32, 'protocol_version', None, 2, ),  # 1
-    (2, TType.STRING, 'requestorUserName', 'UTF8', None, ),  # 2
-    (3, TType.I64, 'id', None, None, ),  # 3
-    (4, TType.STRING, 'eventType', 'UTF8', None, ),  # 4
-    (5, TType.STRUCT, 'authorizable', [TSentryAuthorizable, None], None, ),  # 5
-    (6, TType.I32, 'ownerType', None, None, ),  # 6
-    (7, TType.STRING, 'ownerName', 'UTF8', None, ),  # 7
-)
-all_structs.append(TSentryHmsEventNotificationResponse)
-TSentryHmsEventNotificationResponse.thrift_spec = (
-    None,  # 0
-    (1, TType.STRUCT, 'status', [sentry_common_service.ttypes.TSentryResponseStatus, None], None, ),  # 1
-    (2, TType.I64, 'id', None, None, ),  # 2
-)
-all_structs.append(TSentryPrivilegesRequest)
-TSentryPrivilegesRequest.thrift_spec = (
-    None,  # 0
-    (1, TType.I32, 'protocol_version', None, 2, ),  # 1
-    (2, TType.STRING, 'requestorUserName', 'UTF8', None, ),  # 2
-)
-all_structs.append(TSentryPrivilegesResponse)
-TSentryPrivilegesResponse.thrift_spec = (
-    None,  # 0
-    (1, TType.STRUCT, 'status', [sentry_common_service.ttypes.TSentryResponseStatus, None], None, ),  # 1
-    (2, TType.MAP, 'privilegesMap', (TType.STRING, 'UTF8', TType.SET, (TType.STRUCT, [TSentryPrivilege, None], False), False), None, ),  # 2
 )
 fix_spec(all_structs)
 del all_structs
