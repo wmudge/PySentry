@@ -1,5 +1,5 @@
 from sentry_policy_service import SentryPolicyService
-from sentry_policy_service.ttypes import TListSentryRolesRequest
+from sentry_policy_service.ttypes import TCreateSentryRoleRequest, TListSentryRolesRequest
 
 from thrift.protocol.TBinaryProtocol import TBinaryProtocol
 from thrift.transport.TSocket import TSocket
@@ -23,7 +23,7 @@ class SentryClient(object):
 
     ERR_CONNECTION = 1
 
-    def __init__(self, host, port, service='sentry'):
+    def __init__(self, host, port='8038', service='sentry'):
         """
         'host'
         'port'
@@ -88,6 +88,11 @@ class SentryClient(object):
         req = TListSentryRolesRequest(requestorUserName=user, groupName=group)
         res = self.client.list_sentry_roles_by_group(req)
         return res.status.value, res.status.message, res.roles
+
+    def create_role(self, user, role):
+        req = TCreateSentryRoleRequest(requestorUserName=user, roleName=role)
+        res = self.client.create_sentry_role(req)
+        return res.status.value, res.status.message, None
 
 
 class SentryError(Exception):
