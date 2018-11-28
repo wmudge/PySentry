@@ -41,7 +41,7 @@ class SentryClient(object):
         Connect
         :return:
         """
-        if self.client is not None:
+        if not self.client:
             try:
                 self.socket = TSocket(self.host, self.port)
 
